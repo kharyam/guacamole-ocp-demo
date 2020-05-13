@@ -9,7 +9,7 @@ After everything is deployed via deploy.sh, the script will print the url and lo
 
 ![Guacamole Login](images/guac-login.png)
 
-After loggin in, you will see a priview of the apps (xcalc and firefox) running containerized.
+After logging in, you will see a priview of the apps (xcalc and firefox) running containerized.
 
 ![Guacamole VNC Preview](images/guac-preview.png)
 
