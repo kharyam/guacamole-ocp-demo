@@ -17,7 +17,7 @@ Click the preview to interact with the applications in the container.
 
 ![Guacamole VNC Preview](images/guac-i3.png)
 
-The windows are running in the [i3 tiling window manager](https://i3wm.org/) so that windows are automatically arranged. To manipulate the windows, familiarize yourself with i3. The i3 **mod** key is set to **Alt**
+The windows are running in the [i3 tiling window manager](https://i3wm.org/) so that windows are automatically arranged. To manipulate the windows, [familiarize yourself with i3](https://i3wm.org/docs/refcard.html). The i3 **mod** key is set to **Alt**
 
 ## Limitations / TODOs
 The VNC connection would frequently crash if tls was enabled (which it is by default). Disabled tls for the purposes of this demo. Another technique such as mTLS via istio can be used to mitigate this.
