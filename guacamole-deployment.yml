@@ -1,0 +1,151 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  generation: 5
+  labels:
+    app: guacamole
+    version: v1
+  name: guacamole
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: guacamole
+    version: v1
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+        sidecar.istio.io/inject: "true"
+      creationTimestamp: null
+      labels:
+        app: guacamole
+        version: v1
+    spec:
+      containers:
+      - env:
+        - name: GUACAMOLE_HOME
+          value: /home/guacamole/.guacamole
+        - name: GUACD_HOSTNAME
+          value: 127.0.0.1
+        - name: GUACD_PORT
+          value: "4822"
+        - name: MYSQL_DATABASE
+          value: guacamole
+        - name: MYSQL_HOSTNAME
+          value: mysql.guacamole.svc.cluster.local
+        - name: MYSQL_PASSWORD
+          value: guacamole
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: MYSQL_USER
+          value: guacamole
+        image: image-registry.openshift-image-registry.svc:5000/guacamole/guacamole-unprivileged:latest
+        imagePullPolicy: Always
+        name: guacamole
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 1
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      - env:
+        - name: GUACAMOLE_HOME
+          value: /home/guacamole/.guacamole
+        - name: GUACD_HOSTNAME
+          value: 127.0.0.1
+        - name: GUACD_PORT
+          value: "4822"
+        - name: MYSQL_DATABASE
+          value: guacamole
+        - name: MYSQL_HOSTNAME
+          value: mysql.guacamole.svc.cluster.local
+        - name: MYSQL_PASSWORD
+          value: guacamole
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: MYSQL_USER
+          value: guacamole
+        image: guacamole/guacd:latest
+        imagePullPolicy: Always
+        name: guacd
+        ports:
+        - containerPort: 4822
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 4822
+          timeoutSeconds: 1
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - guacamole
+      from:
+        kind: ImageStreamTag
+        name: guacamole-unprivileged:latest
+    type: ImageChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - guacd
+      from:
+        kind: ImageStreamTag
+        name: guacd:latest
+    type: ImageChange
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: 2020-05-15T05:01:57Z
+    lastUpdateTime: 2020-05-15T05:01:57Z
+    message: Deployment config has minimum availability.
+    status: "True"
+    type: Available
+  - lastTransitionTime: 2020-05-15T05:01:58Z
+    lastUpdateTime: 2020-05-15T05:01:58Z
+    message: replication controller "guacd" successfully rolled out
+    reason: NewReplicationControllerAvailable
+    status: "True"
+    type: Progressing
+  details:
+    causes:
+    - type: ConfigChange
+    message: config change
+  latestVersion: 1
+  observedGeneration: 5
+  readyReplicas: 1
+  replicas: 1
+  unavailableReplicas: 0
+  updatedReplicas: 1
