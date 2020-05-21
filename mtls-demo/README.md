@@ -1,6 +1,6 @@
 # ISTIO mTLS Demo
 
-1. (https://docs.openshift.com/container-platform/4.4/service_mesh/service_mesh_install/installing-ossm.html)[Install service mesh]
+1. [Install service mesh](https://docs.openshift.com/container-platform/4.4/service_mesh/service_mesh_install/installing-ossm.html)
 
 
 2. Deploy the Guacamole Demo
