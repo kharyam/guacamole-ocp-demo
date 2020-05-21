@@ -10,16 +10,9 @@ RUN    dnf -y update \
            i3 \
            tigervnc-server \
            wmctrl \
-           origin-clients \
            xcalc \
            firefox \
     && dnf -y clean all
-
-# Create installation directory and set the openbox window manager
-# configuration for all users
-#RUN echo 'export DISPLAY=:1' >> /etc/xdg/openbox/environment \
-#    && echo "xcalc &" \
-#             >> /etc/xdg/openbox/autostart
 
 ADD resources/start.sh /usr/local/bin/
 
